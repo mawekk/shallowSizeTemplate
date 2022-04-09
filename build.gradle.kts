@@ -15,6 +15,11 @@ dependencies {
     detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.19.0")
 }
 
+detekt {
+    source = files("shallowSizePlugin/src", "shallowSizePluginTest/src")
+    autoCorrect = true
+}
+
 repositories {
     mavenCentral()
 }
