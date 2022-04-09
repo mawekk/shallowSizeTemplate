@@ -41,11 +41,11 @@ val Meta.GenerateShallowSize: CliPlugin
             classDeclaration(this, { element.isData() }) { declaration ->
                 Transform.replace(
                     replacing = declaration.element,
-                    newDeclaration = """|$`@annotations` $kind $name $`(typeParameters)` $`(params)` $superTypes {
-                 |  $body
-                 |  fun shallowSize(): Int = TODO()
-                 |}
-                 |""".`class`
+                    newDeclaration =
+                    """|$`@annotations` $kind $name $`(typeParameters)` $`(params)` $superTypes {
+                       |    $body
+                       |    fun shallowSize(): Int = TODO("body will be added later")
+                       |}""".trimMargin().`class`
                 )
             },
             irClass { clazz ->
