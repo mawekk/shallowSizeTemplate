@@ -9,7 +9,19 @@ import org.jetbrains.kotlin.backend.common.lower.DeclarationIrBuilder
 import org.jetbrains.kotlin.ir.builders.irBlockBody
 import org.jetbrains.kotlin.ir.builders.irInt
 import org.jetbrains.kotlin.ir.builders.irReturn
-import org.jetbrains.kotlin.ir.types.*
+import org.jetbrains.kotlin.ir.types.IrType
+import org.jetbrains.kotlin.ir.types.isBoolean
+import org.jetbrains.kotlin.ir.types.isByte
+import org.jetbrains.kotlin.ir.types.isChar
+import org.jetbrains.kotlin.ir.types.isDouble
+import org.jetbrains.kotlin.ir.types.isFloat
+import org.jetbrains.kotlin.ir.types.isInt
+import org.jetbrains.kotlin.ir.types.isLong
+import org.jetbrains.kotlin.ir.types.isShort
+import org.jetbrains.kotlin.ir.types.isUByte
+import org.jetbrains.kotlin.ir.types.isULong
+import org.jetbrains.kotlin.ir.types.isUShort
+import org.jetbrains.kotlin.ir.types.isUnit
 import org.jetbrains.kotlin.ir.util.functions
 import org.jetbrains.kotlin.ir.util.properties
 
@@ -34,7 +46,6 @@ fun IrType.byteSize(): Int = when {
     else -> DEFAULT_SIZE
 }
 
-
 val Meta.GenerateShallowSize: CliPlugin
     get() = "Generate shallowSize method" {
         meta(
@@ -54,7 +65,7 @@ val Meta.GenerateShallowSize: CliPlugin
                     val sum = clazz.properties.sumOf { it.backingField?.type?.byteSize() ?: 0 }
                     val function = clazz.functions.find {
                         it.name.toString() == SHALLOW_SIZE_METHOD_NAME &&
-                                it.valueParameters.isEmpty()
+                            it.valueParameters.isEmpty()
                     } ?: throw NoSuchElementException("shallowSize plugin error: method shallowSize wasn't found")
                     function.body = DeclarationIrBuilder(pluginContext, function.symbol).irBlockBody {
                         +irReturn(irInt(sum))
