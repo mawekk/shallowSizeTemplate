@@ -4,11 +4,21 @@ val jvmTargetVersion: String by project
 
 plugins {
     kotlin("jvm")
+    id("io.gitlab.arturbosch.detekt").version("1.19.0")
     java
 }
 
 group = "spbu.kotlin.class.shallowSize"
 version = "1.0-SNAPSHOT"
+
+dependencies {
+    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.19.0")
+}
+
+detekt {
+    source = files("shallowSizePlugin/src", "shallowSizePluginTest/src")
+    autoCorrect = true
+}
 
 repositories {
     mavenCentral()
